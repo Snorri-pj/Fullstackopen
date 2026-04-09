@@ -25,8 +25,6 @@ const Part = (props) => (
   </p>
 )
 
-
-
 const App = () => {
   const course = {
     id: 1,
