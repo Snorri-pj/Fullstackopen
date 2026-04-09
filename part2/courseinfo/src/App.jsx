@@ -3,7 +3,7 @@ const Course = ( {course} ) => {
     <div>
       <Header course={course.name} />
       <Content parts={course.parts} />
-      <Total course={course} />
+      <Total parts={course.parts} />
     </div>
   )
 }
@@ -26,13 +26,12 @@ const Part = (props) => (
   </p>
 )
 
-const Total = ( {course} ) => {
-  let totalsum = 0
-  for (let i = 0; i < course.parts.length; i++) {
-    totalsum = totalsum + course.parts[i].exercises
-  }
+const Total = (props) => {
+  const sum = props.parts.reduce((a, part) => a + part.exercises, 0)
   return (
-    <b>total of {totalsum} exercises</b>
+    <p>
+     <b>total of {sum} exercises</b>
+    </p>
   )
 }
 
