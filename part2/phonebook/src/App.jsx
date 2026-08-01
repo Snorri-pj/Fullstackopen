@@ -9,10 +9,16 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault()
+
     const personObject = {
       name: newName,
       id: String(persons.length + 1),
     }
+
+    if (persons.some(person => person.name.toLowerCase() === newName.toLowerCase())) {
+          alert(`${newName} is already added to the phonebook.`)
+          return
+        }
 
     setPersons(persons.concat(personObject))
     setNewName('')
