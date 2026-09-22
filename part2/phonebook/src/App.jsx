@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import Filter from './components/Filter'
 import AddNew from './components/AddNew'
 import RenderPerson from './components/RenderPerson'
