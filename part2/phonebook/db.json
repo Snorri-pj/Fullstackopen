@@ -21,9 +21,9 @@
       "id": "4"
     },
     {
-      "number": "48452202",
-      "name": "Snorri",
-      "id": "VErQH2dDPAg"
+      "number": "1234456",
+      "name": "snorri",
+      "id": "uWvo00-4d48"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

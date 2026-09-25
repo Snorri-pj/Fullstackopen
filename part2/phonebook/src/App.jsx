@@ -26,8 +26,19 @@ const App = () => {
       id: String(persons.length + 1),
     }
 
-    if (persons.some(person => person.name.toLowerCase() === newName.toLowerCase())) {
-          alert(`${newName} is already added to the phonebook.`)
+    const existingPerson = persons.find(person => person.name.toLowerCase() === newName.toLowerCase())
+    if (existingPerson) {
+          if (window.confirm(`${newName} is already added to the phonebook, replace the old number with a new one?`)) {
+            personService
+              .update(existingPerson.id, { ...existingPerson, number: newNumber })
+              .then(response => {
+                setPersons(persons.map(person =>
+                  person.id === existingPerson.id ? response.data : person
+                ))
+                setNewName('')
+                setNewNumber('')
+              })
+          }
           return
         }
 
@@ -38,6 +49,15 @@ const App = () => {
           setNewName('')
           setNewNumber('')
         })
+  }
+
+  const deletePerson = (id) => {
+    const person = persons.find(p => p.id === id)
+    if (window.confirm(`delete ${person.name}?`)) {
+      personService
+        .remove(id)
+        .then(setPersons(persons.filter(p => p.id !== id)))
+    }
   }
 
   const handleNameChange = (event) => {
@@ -66,7 +86,7 @@ const App = () => {
       <h2>add a new</h2>
       <AddNew onSubmit={addPerson} nameValue={newName} onNameChange={handleNameChange} numberValue={newNumber} onNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
-      <RenderPerson persons={personsToShow} />
+      <RenderPerson persons={personsToShow} deletePerson={deletePerson} />
     </div>
   )
 }
