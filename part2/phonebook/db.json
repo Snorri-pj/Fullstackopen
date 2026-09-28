@@ -21,9 +21,24 @@
       "id": "4"
     },
     {
-      "number": "1234456",
+      "number": "48452202",
       "name": "snorri",
       "id": "uWvo00-4d48"
+    },
+    {
+      "number": "393939",
+      "name": "Vinnister",
+      "id": "ALOsS9IAiX8"
+    },
+    {
+      "number": "393924",
+      "name": "Kevin",
+      "id": "fcHbe-SHbSw"
+    },
+    {
+      "number": "393939",
+      "name": "yozie",
+      "id": "-awo5H5MYVQ"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
