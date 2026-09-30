@@ -10,7 +10,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [notification, setNotification] = useState({ message: null, type: null })
 
   useEffect(() => {
     personService
@@ -38,15 +38,28 @@ const App = () => {
                 setPersons(persons.map(person =>
                   person.id === existingPerson.id ? response.data : person
                 ))
-                setErrorMessage(
-                  `Updated ${existingPerson.name}'s number.`
-                )
+                setNotification({
+                  message: `Updated ${existingPerson.name}'s number.`,
+                  type: 'success'
+                
+                })
                 setTimeout(() => {
-                  setErrorMessage(null)
+                  setNotification({ message: null, type: null })
                 }, 5000)
                 setNewName('')
                 setNewNumber('')
               })
+              .catch(error => {
+                setNotification({
+                  message: `Information about ${existingPerson.name} has already been removed`,
+                  type: 'error'
+                })
+                setTimeout(() => {
+                  setNotification({ message: null, type: null })
+                }, 5000)
+                setPersons(persons.filter(p => p.id !== existingPerson.id))
+              }
+              )
           }
           return
         }
@@ -55,15 +68,25 @@ const App = () => {
         .create(personObject)
         .then(response => {
           setPersons(persons.concat(response.data))
-          setErrorMessage(
-                  `Added ${personObject.name}.`
-                )
+          setNotification({
+                  message: `Added ${personObject.name}.`,
+                  type: 'success'
+                })
                 setTimeout(() => {
-                  setErrorMessage(null)
+                  setNotification({ message: null, type: null })
                 }, 5000)
           setNewName('')
           setNewNumber('')
         })
+        .catch(error => {
+                setNotification({
+                  message: `Failed to add ${personObject.name}`,
+                  type: 'error'
+                })
+                setTimeout(() => {
+                  setNotification({ message: null, type: null })
+                }, 5000)
+              })
   }
 
   const deletePerson = (id) => {
@@ -72,6 +95,16 @@ const App = () => {
       personService
         .remove(id)
         .then(setPersons(persons.filter(p => p.id !== id)))
+        .catch(error => {
+                setNotification({
+                  message: `Information about ${person.name} has already been removed`,
+                  type: 'error'
+                })
+                setTimeout(() => {
+                  setNotification({ message: null, type: null })
+                }, 5000)
+                setPersons(persons.filter(p => p.id !== id))
+              })
     }
   }
 
@@ -97,7 +130,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={errorMessage} />
+      <Notification notification={notification} />
       <Filter value={newFilter} onChange={handleFilter} />
       <h2>add a new</h2>
       <AddNew onSubmit={addPerson} nameValue={newName} onNameChange={handleNameChange} numberValue={newNumber} onNumberChange={handleNumberChange} />
