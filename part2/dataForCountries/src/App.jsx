@@ -5,6 +5,7 @@ const App = () => {
   const [value, setValue] = useState('')
   const [allCountries, setAllCountries] = useState([])
   const [filteredCountries, setFilteredCountries] = useState([])
+  const [selectedCountry, setSelectedCountry] = useState(null)
 
   useEffect (() => {
     axios
@@ -26,6 +27,11 @@ const App = () => {
     if (searchText.length === 0) {
       setFilteredCountries([])
     }
+  }
+
+  const handleSelectedCountry = (country) => {
+    console.log(country.name.common)
+    setFilteredCountries([country])
   }
 
    
@@ -53,7 +59,7 @@ const App = () => {
         ) : ( 
           filteredCountries.map(country => 
         <div>
-          {country.name.common}
+          {country.name.common} <button onClick={() => handleSelectedCountry(country)}>Show</button>
         </div>
            )
         )}
