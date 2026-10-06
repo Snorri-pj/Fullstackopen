@@ -5,7 +5,7 @@ const App = () => {
   const [value, setValue] = useState('')
   const [allCountries, setAllCountries] = useState([])
   const [filteredCountries, setFilteredCountries] = useState([])
-  const [selectedCountry, setSelectedCountry] = useState(null)
+  const [weather, setWeather] = useState(null)
 
   useEffect (() => {
     axios
@@ -15,9 +15,22 @@ const App = () => {
       })
   }, [])
 
+  useEffect (() => {
+    if (filteredCountries.length === 1) {
+      const api_key = import.meta.env.VITE_WEATHER_API_KEY
+      const lat = filteredCountries[0].latlng[0]
+      const lon = filteredCountries[0].latlng[1]
+
+      axios
+        .get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${api_key}&units=metric`)
+        .then(response => {
+          setWeather(response.data)
+        })
+    }
+  }, [filteredCountries])
+
   const handleChange = (effect) => {
     const searchText = effect.target.value
-    console.log(effect.target.value)
     setValue(effect.target.value)
 
     const filtered = allCountries.filter(country => 
@@ -30,13 +43,8 @@ const App = () => {
   }
 
   const handleSelectedCountry = (country) => {
-    console.log(country.name.common)
     setFilteredCountries([country])
   }
-
-   
-
-
 
   return (
     <div>
@@ -55,6 +63,13 @@ const App = () => {
                   {Object.values(filteredCountries[0].languages || {}).map(lang => <li>{lang}</li>)}
                 </ul>
                 <img src={filteredCountries[0].flags.png} />
+          <h1>Weather in {filteredCountries[0].capital}</h1>
+          <div>Temperature: {weather?.main?.temp} celcius</div>
+          <img
+            src={`https://openweathermap.org/img/wn/${weather?.weather[0]?.icon}@2x.png`}
+            alt="weather icon"
+          />
+          <div>Wind: {weather?.wind?.speed}</div>
           </div>         
         ) : ( 
           filteredCountries.map(country => 
