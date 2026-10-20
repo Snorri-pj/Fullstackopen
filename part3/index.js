@@ -70,6 +70,16 @@ app.post('/api/persons', (request, response) => {
         })
     }
 
+    const nameAlreadyExists = persons.some(person => 
+        person.name.toLowerCase() === body.name.toLowerCase()
+    )
+
+    if (nameAlreadyExists) {
+        return response.status(400).json({
+            error: 'name must be unique'
+        })
+    }
+
     const person = {
         id: Math.floor(Math.random() * 1000000000).toString(),
         name: body.name,
