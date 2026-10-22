@@ -1,0 +1,18 @@
+{
+  "name": "phonebook-backend",
+  "version": "1.0.0",
+  "description": "Contains the backend for the phonebook application",
+  "license": "ISC",
+  "author": "Snorri Pall Jonsson",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^5.3.0",
+    "morgan": "^1.12.1"
+  }
+}
